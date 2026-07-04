@@ -2,10 +2,14 @@
 
 #pragma once
 
+#include "HAL/Platform.h"
+
 #if PLATFORM_ANDROID
 #include "Android/AndroidSentryFeedback.h"
-#elif PLATFORM_APPLE
+#elif PLATFORM_APPLE && !USE_SENTRY_NATIVE
 #include "Apple/AppleSentryFeedback.h"
+#elif USE_SENTRY_NATIVE && PLATFORM_MICROSOFT
+#include "Microsoft/MicrosoftSentryFeedback.h"
 #elif USE_SENTRY_NATIVE
 #include "GenericPlatform/GenericPlatformSentryFeedback.h"
 #else

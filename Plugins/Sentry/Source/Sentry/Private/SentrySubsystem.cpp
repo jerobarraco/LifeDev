@@ -2,7 +2,10 @@
 
 #include "SentrySubsystem.h"
 
+#include "SentryAttachment.h"
 #include "SentryBeforeBreadcrumbHandler.h"
+#include "SentryBeforeLogHandler.h"
+#include "SentryBeforeMetricHandler.h"
 #include "SentryBeforeSendHandler.h"
 #include "SentryBreadcrumb.h"
 #include "SentryDefines.h"
@@ -17,7 +20,23 @@
 #include "SentryTransactionContext.h"
 #include "SentryUser.h"
 
+#include "Interface/SentrySubsystemInterface.h"
+
+#include "HAL/PlatformSentryFeedback.h"
+#include "HAL/PlatformSentryId.h"
+#include "HAL/PlatformSentrySubsystem.h"
+
+#include "Utils/SentryCallbackHandlers.h"
+#include "Utils/SentryHangWatcher.h"
+
+#include "Performance/SentryPerfFrameTimeMonitor.h"
+#include "Performance/SentryPerfGCMonitor.h"
+#include "Performance/SentryPerfGameStatsMonitor.h"
+#include "Performance/SentryPerfMetricAttributes.h"
+#include "Performance/SentryPerfNetworkMonitor.h"
+
 #include "CoreGlobals.h"
+#include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GenericPlatform/GenericPlatformDriver.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
@@ -25,15 +44,7 @@
 #include "Misc/AssertionMacros.h"
 #include "Misc/CoreDelegates.h"
 #include "Misc/EngineVersion.h"
-#include "SentryAttachment.h"
-
-#include "Interface/SentrySubsystemInterface.h"
-
-#include "HAL/PlatformSentryFeedback.h"
-#include "HAL/PlatformSentryId.h"
-#include "HAL/PlatformSentrySubsystem.h"
-// TODO remove or upgrade
-#include "Null/NullSentrySubsystem.h"
+#include "Misc/EngineVersionComparison.h"
 
 void USentrySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -108,12 +119,29 @@ void USentrySubsystem::Initialize()
 			? NewObject<USentryBeforeBreadcrumbHandler>(this, static_cast<UClass*>(Settings->BeforeBreadcrumbHandler))
 			: nullptr;
 
+	BeforeLogHandler =
+		Settings->BeforeLogHandler != nullptr
+			? NewObject<USentryBeforeLogHandler>(this, static_cast<UClass*>(Settings->BeforeLogHandler))
+			: nullptr;
+
+	BeforeMetricHandler =
+		Settings->BeforeMetricHandler != nullptr
+			? NewObject<USentryBeforeMetricHandler>(this, static_cast<UClass*>(Settings->BeforeMetricHandler))
+			: nullptr;
+
 	TraceSampler =
 		Settings->TracesSampler != nullptr
 			? NewObject<USentryTraceSampler>(this, static_cast<UClass*>(Settings->TracesSampler))
 			: nullptr;
 
-	SubsystemNativeImpl->InitWithSettings(Settings, BeforeSendHandler, BeforeBreadcrumbHandler, TraceSampler);
+	FSentryCallbackHandlers CallbackHandlers;
+	CallbackHandlers.BeforeSendHandler = BeforeSendHandler;
+	CallbackHandlers.BeforeBreadcrumbHandler = BeforeBreadcrumbHandler;
+	CallbackHandlers.BeforeLogHandler = BeforeLogHandler;
+	CallbackHandlers.BeforeMetricHandler = BeforeMetricHandler;
+	CallbackHandlers.TraceSampler = TraceSampler;
+
+	SubsystemNativeImpl->InitWithSettings(Settings, CallbackHandlers);
 
 	if (!SubsystemNativeImpl->IsEnabled())
 	{
@@ -138,6 +166,16 @@ void USentrySubsystem::Initialize()
 		FString EnsureMessage = GErrorHist;
 		SubsystemNativeImpl->CaptureEnsure(TEXT("Ensure failed"), EnsureMessage.TrimStartAndEnd());
 	});
+
+	if (Settings->EnableHangTracking && SubsystemNativeImpl->IsHangTrackingSupported() && !SubsystemNativeImpl->IsNativeHangTrackingEnabled())
+	{
+		ConfigureHangTracking();
+	}
+
+	if (Settings->EnableMetrics)
+	{
+		ConfigurePerformanceMetrics();
+	}
 }
 
 void USentrySubsystem::InitializeWithSettings(const FConfigureSettingsDelegate& OnConfigureSettings)
@@ -181,6 +219,47 @@ void USentrySubsystem::Close()
 		OnEnsureDelegate.Reset();
 	}
 
+	if (HangWatcher.IsValid())
+	{
+		HangWatcher->Stop();
+		HangWatcher.Reset();
+	}
+
+	if (PerfFrameTimeMonitor.IsValid())
+	{
+		if (GEngine)
+		{
+			GEngine->RemovePerformanceDataConsumer(PerfFrameTimeMonitor);
+		}
+
+		PerfFrameTimeMonitor.Reset();
+	}
+
+	if (PerfGCMonitor.IsValid())
+	{
+		PerfGCMonitor.Reset();
+	}
+
+	if (PerfGameStatsMonitor.IsValid())
+	{
+		PerfGameStatsMonitor.Reset();
+	}
+
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
+	if (OnNetDriverCreatedHandle.IsValid())
+	{
+		FWorldDelegates::OnNetDriverCreated.Remove(OnNetDriverCreatedHandle);
+		OnNetDriverCreatedHandle.Reset();
+	}
+
+	PerfNetworkMonitor.Reset();
+#endif
+
+	if (PerfMetricAttributes.IsValid())
+	{
+		PerfMetricAttributes.Reset();
+	}
+
 	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
 	{
 		return;
@@ -214,6 +293,11 @@ void USentrySubsystem::AddBreadcrumb(USentryBreadcrumb* Breadcrumb)
 		return;
 	}
 
+	if (!Breadcrumb)
+	{
+		return;
+	}
+
 	SubsystemNativeImpl->AddBreadcrumb(Breadcrumb->GetNativeObject());
 }
 
@@ -227,6 +311,101 @@ void USentrySubsystem::AddBreadcrumbWithParams(const FString& Message, const FSt
 	}
 
 	SubsystemNativeImpl->AddBreadcrumbWithParams(Message, Category, Type, Data, Level);
+}
+
+void USentrySubsystem::LogDebug(const FString& Message, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Debug, TMap<FString, FSentryVariant>(), Category);
+}
+
+void USentrySubsystem::LogDebugWithAttributes(const FString& Message, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Debug, Attributes, Category);
+}
+
+void USentrySubsystem::LogInfo(const FString& Message, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Info, TMap<FString, FSentryVariant>(), Category);
+}
+
+void USentrySubsystem::LogInfoWithAttributes(const FString& Message, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Info, Attributes, Category);
+}
+
+void USentrySubsystem::LogWarning(const FString& Message, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Warning, TMap<FString, FSentryVariant>(), Category);
+}
+
+void USentrySubsystem::LogWarningWithAttributes(const FString& Message, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Warning, Attributes, Category);
+}
+
+void USentrySubsystem::LogError(const FString& Message, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Error, TMap<FString, FSentryVariant>(), Category);
+}
+
+void USentrySubsystem::LogErrorWithAttributes(const FString& Message, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Error, Attributes, Category);
+}
+
+void USentrySubsystem::LogFatal(const FString& Message, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Fatal, TMap<FString, FSentryVariant>(), Category);
+}
+
+void USentrySubsystem::LogFatalWithAttributes(const FString& Message, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	AddLog(Message, ESentryLevel::Fatal, Attributes, Category);
+}
+
+void USentrySubsystem::AddCount(const FString& Key, int32 Value)
+{
+	AddCountWithAttributes(Key, Value, TMap<FString, FSentryVariant>());
+}
+
+void USentrySubsystem::AddCountWithAttributes(const FString& Key, int32 Value, const TMap<FString, FSentryVariant>& Attributes)
+{
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->AddCount(Key, Value, Attributes);
+}
+
+void USentrySubsystem::AddDistribution(const FString& Key, float Value, const FSentryUnit& Unit)
+{
+	AddDistributionWithAttributes(Key, Value, Unit, TMap<FString, FSentryVariant>());
+}
+
+void USentrySubsystem::AddDistributionWithAttributes(const FString& Key, float Value, const FSentryUnit& Unit, const TMap<FString, FSentryVariant>& Attributes)
+{
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->AddDistribution(Key, Value, Unit.ToString(), Attributes);
+}
+
+void USentrySubsystem::AddGauge(const FString& Key, float Value, const FSentryUnit& Unit)
+{
+	AddGaugeWithAttributes(Key, Value, Unit, TMap<FString, FSentryVariant>());
+}
+
+void USentrySubsystem::AddGaugeWithAttributes(const FString& Key, float Value, const FSentryUnit& Unit, const TMap<FString, FSentryVariant>& Attributes)
+{
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->AddGauge(Key, Value, Unit.ToString(), Attributes);
 }
 
 void USentrySubsystem::ClearBreadcrumbs()
@@ -244,8 +423,14 @@ void USentrySubsystem::ClearBreadcrumbs()
 void USentrySubsystem::AddAttachment(USentryAttachment* Attachment)
 {
 	check(SubsystemNativeImpl);
+	check(Attachment);
 
 	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	if (!Attachment)
 	{
 		return;
 	}
@@ -275,6 +460,10 @@ FString USentrySubsystem::CaptureMessage(const FString& Message, ESentryLevel Le
 	}
 
 	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureMessage(Message, Level);
+	if (!SentryId)
+	{
+		return FString();
+	}
 
 	return SentryId->ToString();
 }
@@ -293,11 +482,17 @@ FString USentrySubsystem::CaptureMessageWithScope(const FString& Message, const 
 		return FString();
 	}
 
-	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureMessageWithScope(Message, Level, FSentryScopeDelegate::CreateLambda([OnConfigureScope](TSharedPtr<ISentryScope> NativeScope)
+	const auto ConfigureScopeLambda = FSentryScopeDelegate::CreateLambda([OnConfigureScope](TSharedPtr<ISentryScope> NativeScope)
 	{
 		USentryScope* UnrealScope = USentryScope::Create(NativeScope);
 		OnConfigureScope.ExecuteIfBound(UnrealScope);
-	}));
+	});
+
+	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureMessageWithScope(Message, Level, ConfigureScopeLambda);
+	if (!SentryId)
+	{
+		return FString();
+	}
 
 	return SentryId->ToString();
 }
@@ -312,7 +507,16 @@ FString USentrySubsystem::CaptureEvent(USentryEvent* Event)
 		return FString();
 	}
 
+	if (!Event)
+	{
+		return FString();
+	}
+
 	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureEvent(Event->GetNativeObject());
+	if (!SentryId)
+	{
+		return FString();
+	}
 
 	return SentryId->ToString();
 }
@@ -332,11 +536,22 @@ FString USentrySubsystem::CaptureEventWithScope(USentryEvent* Event, const FConf
 		return FString();
 	}
 
-	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureEventWithScope(Event->GetNativeObject(), FSentryScopeDelegate::CreateLambda([OnConfigureScope](TSharedPtr<ISentryScope> NativeScope)
+	if (!Event)
+	{
+		return FString();
+	}
+
+	const auto ConfigureScopeLambda = FSentryScopeDelegate::CreateLambda([OnConfigureScope](TSharedPtr<ISentryScope> NativeScope)
 	{
 		USentryScope* UnrealScope = USentryScope::Create(NativeScope);
 		OnConfigureScope.ExecuteIfBound(UnrealScope);
-	}));
+	});
+
+	TSharedPtr<ISentryId> SentryId = SubsystemNativeImpl->CaptureEventWithScope(Event->GetNativeObject(), ConfigureScopeLambda);
+	if (!SentryId)
+	{
+		return FString();
+	}
 
 	return SentryId->ToString();
 }
@@ -351,16 +566,24 @@ void USentrySubsystem::CaptureFeedback(USentryFeedback* Feedback)
 		return;
 	}
 
+	if (!Feedback)
+	{
+		return;
+	}
+
 	SubsystemNativeImpl->CaptureFeedback(Feedback->GetNativeObject());
 }
 
 void USentrySubsystem::CaptureFeedbackWithParams(const FString& Message, const FString& Name, const FString& Email, const FString& EventId)
 {
 	check(SubsystemNativeImpl);
-	check(!Message.IsEmpty());
 
-	USentryFeedback* Feedback = USentryFeedback::Create(MakeShareable(new FPlatformSentryFeedback(Message)));
-	check(Feedback);
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	TSharedPtr<ISentryFeedback> Feedback = MakeShareable(new FPlatformSentryFeedback(Message));
 
 	if (!Name.IsEmpty())
 		Feedback->SetName(Name);
@@ -369,7 +592,7 @@ void USentrySubsystem::CaptureFeedbackWithParams(const FString& Message, const F
 	if (!EventId.IsEmpty())
 		Feedback->SetAssociatedEvent(EventId);
 
-	CaptureFeedback(Feedback);
+	SubsystemNativeImpl->CaptureFeedback(Feedback);
 }
 
 void USentrySubsystem::SetUser(USentryUser* User)
@@ -378,6 +601,11 @@ void USentrySubsystem::SetUser(USentryUser* User)
 	check(User);
 
 	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	if (!User)
 	{
 		return;
 	}
@@ -433,6 +661,30 @@ void USentrySubsystem::RemoveTag(const FString& Key)
 	SubsystemNativeImpl->RemoveTag(Key);
 }
 
+void USentrySubsystem::SetAttribute(const FString& Key, const FSentryVariant& Value)
+{
+	check(SubsystemNativeImpl);
+
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->SetAttribute(Key, Value);
+}
+
+void USentrySubsystem::RemoveAttribute(const FString& Key)
+{
+	check(SubsystemNativeImpl);
+
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->RemoveAttribute(Key);
+}
+
 void USentrySubsystem::SetLevel(ESentryLevel Level)
 {
 	check(SubsystemNativeImpl);
@@ -443,6 +695,30 @@ void USentrySubsystem::SetLevel(ESentryLevel Level)
 	}
 
 	SubsystemNativeImpl->SetLevel(Level);
+}
+
+void USentrySubsystem::SetRelease(const FString& Release)
+{
+	check(SubsystemNativeImpl);
+
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->SetRelease(Release);
+}
+
+void USentrySubsystem::SetEnvironment(const FString& Environment)
+{
+	check(SubsystemNativeImpl);
+
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	SubsystemNativeImpl->SetEnvironment(Environment);
 }
 
 void USentrySubsystem::StartSession()
@@ -505,6 +781,18 @@ EUserConsent USentrySubsystem::GetUserConsent() const
 	return SubsystemNativeImpl->GetUserConsent();
 }
 
+bool USentrySubsystem::IsUserConsentRequired() const
+{
+	check(SubsystemNativeImpl);
+
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return false;
+	}
+
+	return SubsystemNativeImpl->IsUserConsentRequired();
+}
+
 USentryTransaction* USentrySubsystem::StartTransaction(const FString& Name, const FString& Operation, bool BindToScope)
 {
 	check(SubsystemNativeImpl);
@@ -515,7 +803,10 @@ USentryTransaction* USentrySubsystem::StartTransaction(const FString& Name, cons
 	}
 
 	TSharedPtr<ISentryTransaction> SentryTransaction = SubsystemNativeImpl->StartTransaction(Name, Operation, BindToScope);
-	check(SentryTransaction);
+	if (!SentryTransaction)
+	{
+		return nullptr;
+	}
 
 	return USentryTransaction::Create(SentryTransaction);
 }
@@ -530,8 +821,16 @@ USentryTransaction* USentrySubsystem::StartTransactionWithContext(USentryTransac
 		return nullptr;
 	}
 
+	if (!Context)
+	{
+		return nullptr;
+	}
+
 	TSharedPtr<ISentryTransaction> SentryTransaction = SubsystemNativeImpl->StartTransactionWithContext(Context->GetNativeObject(), BindToScope);
-	check(SentryTransaction);
+	if (!SentryTransaction)
+	{
+		return nullptr;
+	}
 
 	return USentryTransaction::Create(SentryTransaction);
 }
@@ -546,8 +845,16 @@ USentryTransaction* USentrySubsystem::StartTransactionWithContextAndTimestamp(US
 		return nullptr;
 	}
 
+	if (!Context)
+	{
+		return nullptr;
+	}
+
 	TSharedPtr<ISentryTransaction> SentryTransaction = SubsystemNativeImpl->StartTransactionWithContextAndTimestamp(Context->GetNativeObject(), Timestamp, BindToScope);
-	check(SentryTransaction);
+	if (!SentryTransaction)
+	{
+		return nullptr;
+	}
 
 	return USentryTransaction::Create(SentryTransaction);
 }
@@ -562,8 +869,16 @@ USentryTransaction* USentrySubsystem::StartTransactionWithContextAndOptions(USen
 		return nullptr;
 	}
 
+	if (!Context)
+	{
+		return nullptr;
+	}
+
 	TSharedPtr<ISentryTransaction> SentryTransaction = SubsystemNativeImpl->StartTransactionWithContextAndOptions(Context->GetNativeObject(), Options);
-	check(SentryTransaction);
+	if (!SentryTransaction)
+	{
+		return nullptr;
+	}
 
 	return USentryTransaction::Create(SentryTransaction);
 }
@@ -578,7 +893,10 @@ USentryTransactionContext* USentrySubsystem::ContinueTrace(const FString& Sentry
 	}
 
 	TSharedPtr<ISentryTransactionContext> SentryTransactionContext = SubsystemNativeImpl->ContinueTrace(SentryTrace, BaggageHeaders);
-	check(SentryTransactionContext);
+	if (!SentryTransactionContext)
+	{
+		return nullptr;
+	}
 
 	return USentryTransactionContext::Create(SentryTransactionContext);
 }
@@ -596,6 +914,11 @@ bool USentrySubsystem::IsSupportedForCurrentSettings() const
 	}
 
 	return true;
+}
+
+bool USentrySubsystem::IsCrashing() const
+{
+	return SubsystemNativeImpl ? SubsystemNativeImpl->IsCrashing() : false;
 }
 
 TSharedPtr<ISentrySubsystem> USentrySubsystem::GetNativeObject() const
@@ -661,6 +984,7 @@ void USentrySubsystem::AddDeviceContext()
 	const FPlatformMemoryConstants& MemoryConstants = FPlatformMemory::GetConstants();
 
 	TMap<FString, FSentryVariant> DeviceContext;
+	DeviceContext.Add(TEXT("device_type"), SubsystemNativeImpl->GetDeviceType());
 	DeviceContext.Add(TEXT("cpu_description"), FPlatformMisc::GetCPUBrand());
 	DeviceContext.Add(TEXT("number_of_cores"), FString::FromInt(FPlatformMisc::NumberOfCores()));
 	DeviceContext.Add(TEXT("number_of_cores_including_hyperthreads"), FString::FromInt(FPlatformMisc::NumberOfCoresIncludingHyperthreads()));
@@ -846,7 +1170,9 @@ void USentrySubsystem::ConfigureOutputDevice()
 	if (OutputDevice)
 	{
 		GLog->AddOutputDevice(OutputDevice.Get());
+#if UE_VERSION_OLDER_THAN(5, 7, 0)
 		GLog->SerializeBacklog(OutputDevice.Get());
+#endif
 	}
 }
 
@@ -862,4 +1188,113 @@ void USentrySubsystem::ConfigureErrorOutputDevice()
 		});
 		GError = OutputDeviceError.Get();
 	}
+}
+
+void USentrySubsystem::ConfigureHangTracking()
+{
+	const USentrySettings* Settings = FSentryModule::Get().GetSettings();
+	check(Settings);
+
+	HangWatcher = MakeShared<FSentryHangWatcher>(Settings->HangTimeoutDuration);
+	HangWatcher->OnHangDetected.BindLambda([this](uint32 HungThreadId, double HangDuration)
+	{
+		SubsystemNativeImpl->CaptureHang(HungThreadId);
+	});
+	HangWatcher->Start();
+}
+
+void USentrySubsystem::ConfigurePerformanceMetrics()
+{
+	const USentrySettings* Settings = FSentryModule::Get().GetSettings();
+	check(Settings);
+
+	bool bTrackPerformanceMetrics = false;
+
+	bTrackPerformanceMetrics |= Settings->EnableAutoFrameTimeMetrics;
+	bTrackPerformanceMetrics |= Settings->EnableAutoGameStatsMetrics;
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
+	bTrackPerformanceMetrics |= Settings->EnableAutoGCMetrics;
+#endif
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
+	bTrackPerformanceMetrics |= Settings->EnableAutoNetworkMetrics;
+#endif
+
+	if (!bTrackPerformanceMetrics)
+	{
+		return;
+	}
+
+	PerfMetricAttributes = MakeShared<FSentryPerfMetricAttributes>();
+
+	if (Settings->EnableAutoFrameTimeMetrics)
+	{
+		PerfFrameTimeMonitor = MakeShared<FSentryPerfFrameTimeMonitor>(PerfMetricAttributes);
+
+		if (GEngine)
+		{
+			GEngine->AddPerformanceDataConsumer(PerfFrameTimeMonitor);
+		}
+	}
+
+	if (Settings->EnableAutoGameStatsMetrics)
+	{
+		PerfGameStatsMonitor = MakeShared<FSentryPerfGameStatsMonitor>(PerfMetricAttributes);
+	}
+
+#if !UE_VERSION_OLDER_THAN(5, 5, 0)
+	if (Settings->EnableAutoGCMetrics)
+	{
+		PerfGCMonitor = MakeShared<FSentryPerfGCMonitor>(PerfMetricAttributes);
+	}
+#endif
+
+#if !UE_VERSION_OLDER_THAN(5, 7, 0)
+	if (Settings->EnableAutoNetworkMetrics)
+	{
+		PerfNetworkMonitor = MakeShared<FSentryPerfNetworkMonitor>(PerfMetricAttributes);
+
+		OnNetDriverCreatedHandle = FWorldDelegates::OnNetDriverCreated.AddWeakLambda(this, [this](UWorld* World, UNetDriver* NetDriver)
+		{
+			if (PerfNetworkMonitor.IsValid() && NetDriver)
+			{
+				PerfNetworkMonitor->SetNetDriver(NetDriver);
+			}
+		});
+	}
+#endif
+}
+
+void USentrySubsystem::AddLog(const FString& Message, ESentryLevel Level, const TMap<FString, FSentryVariant>& Attributes, const FString& Category)
+{
+	if (!SubsystemNativeImpl || !SubsystemNativeImpl->IsEnabled())
+	{
+		return;
+	}
+
+	if (Message.IsEmpty())
+	{
+		return;
+	}
+
+	if (!Category.IsEmpty())
+	{
+		const FString FormattedMessage = FString::Printf(TEXT("[%s] %s"), *Category, *Message);
+
+		TMap<FString, FSentryVariant> FinalAttributes = Attributes;
+		if (!Attributes.Contains(TEXT("category")))
+		{
+			FinalAttributes.Add(TEXT("category"), Category);
+		}
+
+		SubsystemNativeImpl->AddLog(FormattedMessage, Level, FinalAttributes);
+	}
+	else
+	{
+		SubsystemNativeImpl->AddLog(Message, Level, Attributes);
+	}
+}
+
+USentryBeforeLogHandler* USentrySubsystem::GetBeforeLogHandler() const
+{
+	return BeforeLogHandler;
 }

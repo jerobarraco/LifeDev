@@ -2,10 +2,7 @@
 
 #include "AppleSentryFeedback.h"
 
-#include "AppleSentryId.h"
-
-#include "Convenience/AppleSentryInclude.h"
-#include "Convenience/AppleSentryMacro.h"
+#if !USE_SENTRY_NATIVE
 
 FAppleSentryFeedback::FAppleSentryFeedback(const FString& message)
 	: Message(message)
@@ -52,19 +49,9 @@ FString FAppleSentryFeedback::GetAssociatedEvent() const
 	return EventId;
 }
 
-SentryFeedback* FAppleSentryFeedback::CreateSentryFeedback(TSharedPtr<FAppleSentryFeedback> feedback)
+void FAppleSentryFeedback::AddAttachment(TSharedPtr<ISentryAttachment> attachment)
 {
-	SentryId* id = nil;
-	if (!feedback->EventId.IsEmpty())
-	{
-		TSharedPtr<FAppleSentryId> idIOS = MakeShareable(new FAppleSentryId(feedback->EventId));
-		id = idIOS->GetNativeObject();
-	}
-
-	return [[SENTRY_APPLE_CLASS(SentryFeedback) alloc] initWithMessage:feedback->Message.GetNSString()
-																  name:feedback->Name.GetNSString()
-																 email:feedback->Email.GetNSString()
-																source:SentryFeedbackSourceCustom
-													 associatedEventId:id
-														   attachments:nil];
+	Attachments.Add(attachment);
 }
+
+#endif // !USE_SENTRY_NATIVE

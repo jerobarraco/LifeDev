@@ -6,22 +6,69 @@
 #include "SentryBeforeSendHandler.h"
 #include "SentryDefines.h"
 #include "SentrySettings.h"
+#include "Utils/SentryPlatformDetectionUtils.h"
 
 #include "GenericPlatform/GenericPlatformOutputDevices.h"
 #include "Misc/Paths.h"
 
 #if USE_SENTRY_NATIVE
 
-void FLinuxSentrySubsystem::InitWithSettings(const USentrySettings* Settings, USentryBeforeSendHandler* BeforeSendHandler, USentryBeforeBreadcrumbHandler* BeforeBreadcrumbHandler, USentryTraceSampler* TraceSampler)
+void FLinuxSentrySubsystem::InitWithSettings(const USentrySettings* Settings, const FSentryCallbackHandlers& CallbackHandlers)
 {
-	FGenericPlatformSentrySubsystem::InitWithSettings(Settings, BeforeSendHandler, BeforeBreadcrumbHandler, TraceSampler);
+	FGenericPlatformSentrySubsystem::InitWithSettings(Settings, CallbackHandlers);
 
-	InitCrashReporter(Settings->GetEffectiveRelease(), Settings->GetEffectiveEnvironment());
+	if (Settings->EnableExternalCrashReporter)
+	{
+		ConfigureCrashReporterAppearance(Settings);
+	}
+
+	if (Settings->EnableCrashReporterContextPropagation)
+	{
+		InitCrashReporter(Settings->GetEffectiveRelease(), Settings->GetEffectiveEnvironment());
+	}
+
+	// Add platform context if detected
+	if (IsEnabled())
+	{
+		// Set OS context for SteamOS or Bazzite
+		if (FSentryPlatformDetectionUtils::IsSteamOS())
+		{
+			TMap<FString, FSentryVariant> OSContext;
+			OSContext.Add(TEXT("name"), TEXT("SteamOS"));
+			SetContext(TEXT("os"), OSContext);
+			SetTag(TEXT("steamos"), TEXT("true"));
+		}
+		else if (FSentryPlatformDetectionUtils::IsBazzite())
+		{
+			TMap<FString, FSentryVariant> OSContext;
+			OSContext.Add(TEXT("name"), TEXT("Bazzite"));
+			SetContext(TEXT("os"), OSContext);
+			SetTag(TEXT("bazzite"), TEXT("true"));
+		}
+
+		if (FSentryPlatformDetectionUtils::IsRunningSteam())
+		{
+			SetTag(TEXT("steam"), TEXT("true"));
+		}
+	}
+}
+
+FString FLinuxSentrySubsystem::GetHandlerExecutableName() const
+{
+	return bUseNativeBackend ? TEXT("sentry-crash") : TEXT("crashpad_handler");
 }
 
 void FLinuxSentrySubsystem::ConfigureHandlerPath(sentry_options_t* Options)
 {
-	sentry_options_set_handler_path(Options, TCHAR_TO_UTF8(*GetHandlerPath()));
+	const FString HandlerPath = GetHandlerPath();
+
+	if (!FPaths::FileExists(HandlerPath))
+	{
+		UE_LOG(LogSentrySdk, Error, TEXT("Crash handler executable couldn't be found at: %s"), *HandlerPath);
+		return;
+	}
+
+	sentry_options_set_handler_path(Options, TCHAR_TO_UTF8(*HandlerPath));
 }
 
 void FLinuxSentrySubsystem::ConfigureDatabasePath(sentry_options_t* Options)
@@ -58,6 +105,27 @@ void FLinuxSentrySubsystem::ConfigureLogFileAttachment(sentry_options_t* Options
 {
 	const FString LogFilePath = FGenericPlatformOutputDevices::GetAbsoluteLogFilename();
 	sentry_options_add_attachment(Options, TCHAR_TO_UTF8(*FPaths::ConvertRelativePathToFull(LogFilePath)));
+}
+
+void FLinuxSentrySubsystem::ConfigureCrashReporterPath(sentry_options_t* Options)
+{
+	const FString CrashReporterPath = GetCrashReporterPath();
+	if (!FPaths::FileExists(CrashReporterPath))
+	{
+		UE_LOG(LogSentrySdk, Error, TEXT("External crash reporter executable couldn't be found at: %s"), *CrashReporterPath);
+		return;
+	}
+	sentry_options_set_external_crash_reporter_path(Options, TCHAR_TO_UTF8(*CrashReporterPath));
+}
+
+FString FLinuxSentrySubsystem::GetDeviceType() const
+{
+	if (FSentryPlatformDetectionUtils::IsSteamDeck())
+	{
+		return TEXT("Handheld");
+	}
+
+	return FGenericPlatformSentrySubsystem::GetDeviceType();
 }
 
 #endif // USE_SENTRY_NATIVE

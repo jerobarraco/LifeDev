@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "Interface/SentryFeedbackInterface.h"
+#if !USE_SENTRY_NATIVE
 
-@class SentryFeedback;
+#include "Interface/SentryFeedbackInterface.h"
 
 class FAppleSentryFeedback : public ISentryFeedback
 {
@@ -19,14 +19,19 @@ public:
 	virtual FString GetContactEmail() const override;
 	virtual void SetAssociatedEvent(const FString& eventId) override;
 	virtual FString GetAssociatedEvent() const override;
+	virtual void AddAttachment(TSharedPtr<ISentryAttachment> attachment) override;
 
-	static SentryFeedback* CreateSentryFeedback(TSharedPtr<FAppleSentryFeedback> feedback);
+	const TArray<TSharedPtr<ISentryAttachment>>& GetAttachments() const { return Attachments; }
 
 private:
 	FString Message;
 	FString Name;
 	FString Email;
 	FString EventId;
+
+	TArray<TSharedPtr<ISentryAttachment>> Attachments;
 };
 
 typedef FAppleSentryFeedback FPlatformSentryFeedback;
+
+#endif // !USE_SENTRY_NATIVE

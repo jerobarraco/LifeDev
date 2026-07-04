@@ -81,14 +81,14 @@ void InstallSentrySignalHandler()
 	sigaction(SIGSYS, &Action, NULL);
 }
 
-void FIOSSentrySubsystem::InitWithSettings(const USentrySettings* settings, USentryBeforeSendHandler* beforeSendHandler, USentryBeforeBreadcrumbHandler* beforeBreadcrumbHandler, USentryTraceSampler* traceSampler)
+void FIOSSentrySubsystem::InitWithSettings(const USentrySettings* settings, const FSentryCallbackHandlers& callbackHandlers)
 {
 	GIOSSentrySubsystem = this;
 
 	SaveDefaultSignalHandlers();
 	InstallSentrySignalHandler();
 
-	FAppleSentrySubsystem::InitWithSettings(settings, beforeSendHandler, beforeBreadcrumbHandler, traceSampler);
+	FAppleSentrySubsystem::InitWithSettings(settings, callbackHandlers);
 }
 
 void FIOSSentrySubsystem::HandleAssert()

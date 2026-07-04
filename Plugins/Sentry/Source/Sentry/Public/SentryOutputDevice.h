@@ -12,6 +12,8 @@ class FSentryOutputDevice : public FOutputDevice
 public:
 	FSentryOutputDevice();
 
+	static bool IsSerializing();
+
 	virtual void Serialize(const TCHAR* V, ELogVerbosity::Type Verbosity, const FName& Category) override;
 
 	virtual bool CanBeUsedOnAnyThread() const override;
@@ -23,4 +25,11 @@ public:
 
 private:
 	TMap<ESentryLevel, bool> BreadcrumbFlags;
+	TMap<ESentryLevel, bool> StructuredLoggingFlags;
+
+	bool bIsStructuredLoggingEnabled;
+	TArray<FString> StructuredLoggingCategories;
+	bool bSendBreadcrumbsWithStructuredLogging;
+
+	bool ShouldForwardToStructuredLogging(const FString& Category, ESentryLevel Level) const;
 };

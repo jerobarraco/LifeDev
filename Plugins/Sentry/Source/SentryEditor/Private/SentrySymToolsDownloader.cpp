@@ -20,16 +20,19 @@
 #include "HAL/PlatformFileManager.h"
 #endif
 
+#if PLATFORM_MAC
+#include "Mac/MacSystemIncludes.h"
+#endif
+
 #if PLATFORM_WINDOWS
 const FString FSentrySymToolsDownloader::SentryCliExecName = TEXT("sentry-cli-Windows-x86_64.exe");
-const FString FSentrySymToolsDownloader::SentrySymUploadScriptName = TEXT("upload-debug-symbols-win.bat");
 #elif PLATFORM_MAC
 const FString FSentrySymToolsDownloader::SentryCliExecName = TEXT("sentry-cli-Darwin-universal");
-const FString FSentrySymToolsDownloader::SentrySymUploadScriptName = TEXT("upload-debug-symbols.sh");
 #elif PLATFORM_LINUX
 const FString FSentrySymToolsDownloader::SentryCliExecName = TEXT("sentry-cli-Linux-x86_64");
-const FString FSentrySymToolsDownloader::SentrySymUploadScriptName = TEXT("upload-debug-symbols.sh");
 #endif
+
+const FString FSentrySymToolsDownloader::SentrySymUploadScriptName = TEXT("upload-debug-symbols.py");
 
 void FSentrySymToolsDownloader::Download(const TFunction<void(bool)>& OnCompleted)
 {
@@ -55,8 +58,7 @@ ESentrySymToolsStatus FSentrySymToolsDownloader::GetStatus()
 		return ESentrySymToolsStatus::Downloading;
 	}
 
-	if (FPaths::FileExists(GetSentryCliPath()) && FPaths::FileExists(GetSymUploadScriptPath()) &&
-		HasExecutePermission(GetSentryCliPath()) && HasExecutePermission(GetSymUploadScriptPath()))
+	if (FPaths::FileExists(GetSentryCliPath()) && FPaths::FileExists(GetSymUploadScriptPath()) && HasExecutePermission(GetSentryCliPath()))
 	{
 		return ESentrySymToolsStatus::Configured;
 	}

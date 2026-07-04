@@ -17,7 +17,7 @@
 #include "LifeDev/Game/Sys/LGGameMode.h"
 #include "Settings/LSettings.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, Log);
+DEFINE_LOG_CATEGORY_STATIC(LogSentry, Log, All);
 
 USentry* USentry::Instance(const UObject* const O) {
 	const ULGameInstance* const Instance = ULGameInstance::Instance(O);

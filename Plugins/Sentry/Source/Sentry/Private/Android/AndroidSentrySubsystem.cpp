@@ -6,6 +6,7 @@
 #include "AndroidSentryBreadcrumb.h"
 #include "AndroidSentryEvent.h"
 #include "AndroidSentryFeedback.h"
+#include "AndroidSentryHint.h"
 #include "AndroidSentryId.h"
 #include "AndroidSentryTransaction.h"
 #include "AndroidSentryTransactionContext.h"
@@ -26,11 +27,34 @@
 #include "Utils/SentryFileUtils.h"
 
 #include "Dom/JsonObject.h"
+#include "HAL/FileManager.h"
+#include "Misc/CoreDelegates.h"
+#include "Misc/FileHelper.h"
 #include "Misc/OutputDeviceError.h"
+#include "Misc/Paths.h"
 #include "Serialization/JsonSerializer.h"
+#include "Utils/SentryScreenshotUtils.h"
 
-void FAndroidSentrySubsystem::InitWithSettings(const USentrySettings* settings, USentryBeforeSendHandler* beforeSendHandler, USentryBeforeBreadcrumbHandler* beforeBreadcrumbHandler, USentryTraceSampler* traceSampler)
+FAndroidSentrySubsystem::FAndroidSentrySubsystem()
 {
+	SentryJavaClasses::InitJavaClassRefsCache();
+}
+
+FAndroidSentrySubsystem::~FAndroidSentrySubsystem()
+{
+	SentryJavaClasses::ClearJavaClassRefsCache();
+}
+
+void FAndroidSentrySubsystem::InitWithSettings(const USentrySettings* settings, const FSentryCallbackHandlers& callbackHandlers)
+{
+	USentryBeforeSendHandler* beforeSendHandler = callbackHandlers.BeforeSendHandler;
+	USentryBeforeBreadcrumbHandler* beforeBreadcrumbHandler = callbackHandlers.BeforeBreadcrumbHandler;
+	USentryBeforeLogHandler* beforeLogHandler = callbackHandlers.BeforeLogHandler;
+	USentryBeforeMetricHandler* beforeMetricHandler = callbackHandlers.BeforeMetricHandler;
+	USentryTraceSampler* traceSampler = callbackHandlers.TraceSampler;
+
+	isScreenshotAttachmentEnabled = settings->AttachScreenshot;
+
 	TSharedPtr<FJsonObject> SettingsJson = MakeShareable(new FJsonObject);
 	SettingsJson->SetStringField(TEXT("dsn"), settings->Dsn);
 	SettingsJson->SetStringField(TEXT("release"), settings->GetEffectiveRelease());
@@ -43,11 +67,23 @@ void FAndroidSentrySubsystem::InitWithSettings(const USentrySettings* settings, 
 	SettingsJson->SetNumberField(TEXT("sampleRate"), settings->SampleRate);
 	SettingsJson->SetNumberField(TEXT("maxBreadcrumbs"), settings->MaxBreadcrumbs);
 	SettingsJson->SetBoolField(TEXT("attachScreenshot"), settings->AttachScreenshot);
+	SettingsJson->SetBoolField(TEXT("attachSessionReplay"), settings->AttachSessionReplay);
 	SettingsJson->SetArrayField(TEXT("inAppInclude"), FAndroidSentryConverters::StrinArrayToJsonArray(settings->InAppInclude));
 	SettingsJson->SetArrayField(TEXT("inAppExclude"), FAndroidSentryConverters::StrinArrayToJsonArray(settings->InAppExclude));
 	SettingsJson->SetBoolField(TEXT("sendDefaultPii"), settings->SendDefaultPii);
 	SettingsJson->SetBoolField(TEXT("enableAnrTracking"), settings->EnableAppNotRespondingTracking);
+	SettingsJson->SetNumberField(TEXT("anrTimeoutMillis"), settings->AppNotRespondingTimeout * 1000.0f);
+	SettingsJson->SetBoolField(TEXT("enableNdk"), settings->AndroidCrashBackend != ESentryAndroidCrashBackend::TombstoneOnly);
+	SettingsJson->SetBoolField(TEXT("enableTombstone"),
+		settings->AndroidCrashBackend == ESentryAndroidCrashBackend::TombstoneOnly || settings->AndroidCrashBackend == ESentryAndroidCrashBackend::TombstoneMergedWithNdk);
 	SettingsJson->SetBoolField(TEXT("enableAutoLogAttachment"), settings->EnableAutoLogAttachment);
+	SettingsJson->SetBoolField(TEXT("enableStructuredLogging"), settings->EnableStructuredLogging);
+	SettingsJson->SetBoolField(TEXT("enableMetrics"), settings->EnableMetrics);
+	SettingsJson->SetStringField(TEXT("deviceType"), GetDeviceType());
+	if (settings->EnableOfflineCaching)
+	{
+		SettingsJson->SetNumberField(TEXT("maxCacheItems"), settings->CacheMaxItems);
+	}
 	if (settings->EnableTracing && settings->SamplingType == ESentryTracesSamplingType::UniformSampleRate)
 	{
 		SettingsJson->SetNumberField(TEXT("tracesSampleRate"), settings->TracesSampleRate);
@@ -64,6 +100,14 @@ void FAndroidSentrySubsystem::InitWithSettings(const USentrySettings* settings, 
 	{
 		SettingsJson->SetNumberField(TEXT("beforeSendHandler"), (jlong)beforeSendHandler);
 	}
+	if (beforeLogHandler != nullptr)
+	{
+		SettingsJson->SetNumberField(TEXT("beforeLogHandler"), (jlong)beforeLogHandler);
+	}
+	if (beforeMetricHandler != nullptr)
+	{
+		SettingsJson->SetNumberField(TEXT("beforeMetricHandler"), (jlong)beforeMetricHandler);
+	}
 
 	FString SettingsJsonStr;
 	TSharedRef<TJsonWriter<>> JsonWriter = TJsonWriterFactory<>::Create(&SettingsJsonStr);
@@ -71,10 +115,25 @@ void FAndroidSentrySubsystem::InitWithSettings(const USentrySettings* settings, 
 
 	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "init", "(Landroid/app/Activity;Ljava/lang/String;)V",
 		FJavaWrapper::GameActivityThis, *FSentryJavaObjectWrapper::GetJString(SettingsJsonStr));
+
+	if (IsEnabled() && isScreenshotAttachmentEnabled)
+	{
+		OnHandleSystemErrorDelegateHandle = FCoreDelegates::OnHandleSystemError.AddLambda([this]()
+		{
+			TryCaptureScreenshot();
+		});
+	}
 }
 
 void FAndroidSentrySubsystem::Close()
 {
+	if (OnHandleSystemErrorDelegateHandle.IsValid())
+	{
+		FCoreDelegates::OnHandleSystemError.Remove(OnHandleSystemErrorDelegateHandle);
+		OnHandleSystemErrorDelegateHandle.Reset();
+	}
+
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::Sentry, "flush", "(J)V", (jlong)3000);
 	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::Sentry, "close", "()V");
 }
 
@@ -124,6 +183,57 @@ void FAndroidSentrySubsystem::AddBreadcrumbWithParams(const FString& Message, co
 
 	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::Sentry, "addBreadcrumb", "(Lio/sentry/Breadcrumb;)V",
 		breadcrumbAndroid->GetJObject());
+}
+
+void FAndroidSentrySubsystem::AddLog(const FString& Message, ESentryLevel Level, const TMap<FString, FSentryVariant>& Attributes)
+{
+	TSharedPtr<FSentryJavaObjectWrapper> attributesMap = FAndroidSentryConverters::VariantMapToNative(Attributes);
+
+	switch (Level)
+	{
+	case ESentryLevel::Fatal:
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "addLogFatal", "(Ljava/lang/String;Ljava/util/HashMap;)V",
+			*FSentryJavaObjectWrapper::GetJString(Message), attributesMap->GetJObject());
+		break;
+	case ESentryLevel::Error:
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "addLogError", "(Ljava/lang/String;Ljava/util/HashMap;)V",
+			*FSentryJavaObjectWrapper::GetJString(Message), attributesMap->GetJObject());
+		break;
+	case ESentryLevel::Warning:
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "addLogWarn", "(Ljava/lang/String;Ljava/util/HashMap;)V",
+			*FSentryJavaObjectWrapper::GetJString(Message), attributesMap->GetJObject());
+		break;
+	case ESentryLevel::Info:
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "addLogInfo", "(Ljava/lang/String;Ljava/util/HashMap;)V",
+			*FSentryJavaObjectWrapper::GetJString(Message), attributesMap->GetJObject());
+		break;
+	case ESentryLevel::Debug:
+	default:
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "addLogDebug", "(Ljava/lang/String;Ljava/util/HashMap;)V",
+			*FSentryJavaObjectWrapper::GetJString(Message), attributesMap->GetJObject());
+		break;
+	}
+}
+
+void FAndroidSentrySubsystem::AddCount(const FString& Key, int32 Value, const TMap<FString, FSentryVariant>& Attributes)
+{
+	TSharedPtr<FSentryJavaObjectWrapper> attributesMap = FAndroidSentryConverters::VariantMapToNative(Attributes);
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "metricCount", "(Ljava/lang/String;DLjava/util/HashMap;)V",
+		*FSentryJavaObjectWrapper::GetJString(Key), static_cast<double>(Value), attributesMap->GetJObject());
+}
+
+void FAndroidSentrySubsystem::AddDistribution(const FString& Key, float Value, const FString& Unit, const TMap<FString, FSentryVariant>& Attributes)
+{
+	TSharedPtr<FSentryJavaObjectWrapper> attributesMap = FAndroidSentryConverters::VariantMapToNative(Attributes);
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "metricDistribution", "(Ljava/lang/String;DLjava/lang/String;Ljava/util/HashMap;)V",
+		*FSentryJavaObjectWrapper::GetJString(Key), static_cast<double>(Value), *FSentryJavaObjectWrapper::GetJString(Unit), attributesMap->GetJObject());
+}
+
+void FAndroidSentrySubsystem::AddGauge(const FString& Key, float Value, const FString& Unit, const TMap<FString, FSentryVariant>& Attributes)
+{
+	TSharedPtr<FSentryJavaObjectWrapper> attributesMap = FAndroidSentryConverters::VariantMapToNative(Attributes);
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "metricGauge", "(Ljava/lang/String;DLjava/lang/String;Ljava/util/HashMap;)V",
+		*FSentryJavaObjectWrapper::GetJString(Key), static_cast<double>(Value), *FSentryJavaObjectWrapper::GetJString(Unit), attributesMap->GetJObject());
 }
 
 void FAndroidSentrySubsystem::ClearBreadcrumbs()
@@ -194,18 +304,57 @@ TSharedPtr<ISentryId> FAndroidSentrySubsystem::CaptureEventWithScope(TSharedPtr<
 
 TSharedPtr<ISentryId> FAndroidSentrySubsystem::CaptureEnsure(const FString& type, const FString& message)
 {
-	auto id = FSentryJavaObjectWrapper::CallStaticObjectMethod<jobject>(SentryJavaClasses::SentryBridgeJava, "captureException", "(Ljava/lang/String;Ljava/lang/String;)Lio/sentry/protocol/SentryId;",
-		*FSentryJavaObjectWrapper::GetJString(type), *FSentryJavaObjectWrapper::GetJString(message));
+	TSharedPtr<FAndroidSentryAttachment> ScreenshotAttachment = nullptr;
+
+	if (isScreenshotAttachmentEnabled)
+	{
+		const FString& ScreenshotPath = TryCaptureScreenshot();
+		if (!ScreenshotPath.IsEmpty())
+		{
+			TArray<uint8> ScreenshotData;
+			if (FFileHelper::LoadFileToArray(ScreenshotData, *ScreenshotPath))
+			{
+				ScreenshotAttachment = MakeShareable(new FAndroidSentryAttachment(ScreenshotData, TEXT("screenshot.png"), TEXT("image/png")));
+			}
+
+			if (!IFileManager::Get().Delete(*ScreenshotPath))
+			{
+				UE_LOG(LogSentrySdk, Error, TEXT("Failed to delete screenshot attachment: %s"), *ScreenshotPath);
+			}
+		}
+	}
+
+	auto id = FSentryJavaObjectWrapper::CallStaticObjectMethod<jobject>(SentryJavaClasses::SentryBridgeJava, "captureException", "(Ljava/lang/String;Ljava/lang/String;Lio/sentry/Attachment;)Lio/sentry/protocol/SentryId;",
+		*FSentryJavaObjectWrapper::GetJString(type), *FSentryJavaObjectWrapper::GetJString(message),
+		ScreenshotAttachment.IsValid() ? ScreenshotAttachment->GetJObject() : nullptr);
 
 	return MakeShareable(new FAndroidSentryId(*id));
+}
+
+TSharedPtr<ISentryId> FAndroidSentrySubsystem::CaptureHang(uint32 HungThreadId)
+{
+	// Hang tracking is handled by the native Android SDK via built-in ANR detection (see EnableAppNotRespondingTracking setting)
+	return nullptr;
+}
+
+bool FAndroidSentrySubsystem::IsHangTrackingSupported() const
+{
+	return false;
+}
+
+bool FAndroidSentrySubsystem::IsNativeHangTrackingEnabled() const
+{
+	return false;
 }
 
 void FAndroidSentrySubsystem::CaptureFeedback(TSharedPtr<ISentryFeedback> feedback)
 {
 	TSharedPtr<FAndroidSentryFeedback> feedbackAndroid = StaticCastSharedPtr<FAndroidSentryFeedback>(feedback);
 
-	FSentryJavaObjectWrapper::CallStaticObjectMethod<jobject>(SentryJavaClasses::Sentry, "captureFeedback", "(Lio/sentry/protocol/Feedback;)Lio/sentry/protocol/SentryId;",
-		feedbackAndroid->GetJObject());
+	TSharedPtr<FAndroidSentryHint> hintAndroid = feedbackAndroid->GetHint();
+
+	FSentryJavaObjectWrapper::CallStaticObjectMethod<jobject>(SentryJavaClasses::Sentry, "captureFeedback", "(Lio/sentry/protocol/Feedback;Lio/sentry/Hint;)Lio/sentry/protocol/SentryId;",
+		feedbackAndroid->GetJObject(), hintAndroid ? hintAndroid->GetJObject() : nullptr);
 }
 
 void FAndroidSentrySubsystem::SetUser(TSharedPtr<ISentryUser> user)
@@ -239,10 +388,38 @@ void FAndroidSentrySubsystem::RemoveTag(const FString& key)
 		*FSentryJavaObjectWrapper::GetJString(key));
 }
 
+void FAndroidSentrySubsystem::SetAttribute(const FString& key, const FSentryVariant& value)
+{
+	TSharedPtr<FSentryJavaObjectWrapper> nativeValue = FAndroidSentryConverters::VariantToNative(value);
+	if (nativeValue.IsValid())
+	{
+		FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "setAttribute", "(Ljava/lang/String;Ljava/lang/Object;)V",
+			*FSentryJavaObjectWrapper::GetJString(key), nativeValue->GetJObject());
+	}
+}
+
+void FAndroidSentrySubsystem::RemoveAttribute(const FString& key)
+{
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "removeAttribute", "(Ljava/lang/String;)V",
+		*FSentryJavaObjectWrapper::GetJString(key));
+}
+
 void FAndroidSentrySubsystem::SetLevel(ESentryLevel level)
 {
 	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "setLevel", "(Lio/sentry/SentryLevel;)V",
 		FAndroidSentryConverters::SentryLevelToNative(level)->GetJObject());
+}
+
+void FAndroidSentrySubsystem::SetRelease(const FString& release)
+{
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "setRelease", "(Ljava/lang/String;)V",
+		*FSentryJavaObjectWrapper::GetJString(release));
+}
+
+void FAndroidSentrySubsystem::SetEnvironment(const FString& environment)
+{
+	FSentryJavaObjectWrapper::CallStaticMethod<void>(SentryJavaClasses::SentryBridgeJava, "setEnvironment", "(Ljava/lang/String;)V",
+		*FSentryJavaObjectWrapper::GetJString(environment));
 }
 
 void FAndroidSentrySubsystem::StartSession()
@@ -271,6 +448,12 @@ EUserConsent FAndroidSentrySubsystem::GetUserConsent() const
 {
 	UE_LOG(LogSentrySdk, Log, TEXT("GetUserConsent is not supported on Android. Returning default `Unknown` value."));
 	return EUserConsent::Unknown;
+}
+
+bool FAndroidSentrySubsystem::IsUserConsentRequired() const
+{
+	UE_LOG(LogSentrySdk, Log, TEXT("IsUserConsentRequired is not supported on Android. Returning default `false` value."));
+	return false;
 }
 
 TSharedPtr<ISentryTransaction> FAndroidSentrySubsystem::StartTransaction(const FString& name, const FString& operation, bool bindToScope)
@@ -329,4 +512,16 @@ void FAndroidSentrySubsystem::HandleAssert()
 {
 	GError->HandleError();
 	PLATFORM_BREAK();
+}
+
+FString FAndroidSentrySubsystem::TryCaptureScreenshot() const
+{
+	FString ScreenshotPath = SentryFileUtils::GetScreenshotPath();
+
+	if (!SentryScreenshotUtils::CaptureScreenshot(ScreenshotPath))
+	{
+		return FString("");
+	}
+
+	return ScreenshotPath;
 }
