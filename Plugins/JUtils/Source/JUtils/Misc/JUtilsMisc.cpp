@@ -5,6 +5,7 @@
 
 #include "Engine/LevelStreamingDynamic.h"
 #include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/DataLayer/DataLayerAsset.h"
