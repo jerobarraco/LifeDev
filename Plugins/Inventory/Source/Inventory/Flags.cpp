@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 #include "Flags.h"
 
-DEFINE_LOG_CATEGORY_STATIC(LogFlags, Log, Log);
+#include "Engine/World.h"
+
+DEFINE_LOG_CATEGORY_STATIC(LogFlags, Log, All);
 
 UFlags* UFlags::Instance(const UObject* const O) {
 	if (UNLIKELY(!IsValid(O))) return nullptr;

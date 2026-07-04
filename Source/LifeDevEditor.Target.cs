@@ -9,8 +9,8 @@ public class LifeDevEditorTarget : TargetRules {
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_8;
 		DefaultBuildSettings = BuildSettingsVersion.V7;
 		// 17:55:14.280: LifeDevEditor modifies the values of properties: [ CppStandardEngine: Cpp23 != Cpp20 ]. This is not allowed, as LifeDevEditor has build products in common with UnrealEditor.
-		// CppStandardEngine = CppStandardVersion.Cpp23;
-		CppStandard = CppStandardVersion.Cpp23;
+		// CppStandardEngine = CppStandardVersion.Cpp20;
+		CppStandard = CppStandardVersion.Cpp20;
 		//ExtraModuleNames.Add("LifeDev"); // +?
 		bAllowHotReload = true;
 
