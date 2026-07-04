@@ -49,29 +49,29 @@ public:
 
 	// the proportional gain. it's a factor.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float Kp = .1;
+	float Kp = .1f;
 	// the integral gain. it's a factor. Bigger values could lead to error (NaN overflow).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float Ki = .01;
+	float Ki = .01f;
 	// the derivative gain. it's a factor. Bigger values could lead to error (NaN overflow).
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float Kd = .01;
+	float Kd = .01f;
 	// Saturation value for the integral. Happens on [-Max, Max]. no saturation is performed is set if ==0
 	// this value is absolute, not normalized.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float IntegralMax = 0;
+	float IntegralMax = 0.f;
 	// Clamps the output. no clamping happens if OutputMin and OutputMax are equals. or min>=max.
 	// Not normalized. See OnUpdate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float OutputMin = 0;
+	float OutputMin = 0.f;
 	// Clamps the output. no clamping happens if OutputMin and OutputMax are equals. or min>=max.
 	// Not normalized. See OnUpdate.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float OutputMax = 0;
+	float OutputMax = 0.f;
 	
 	// how many seconds to wait before auto-stopping when error is ==0. <=0 will disable it.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
-	float StopTime = 1;
+	float StopTime = 1.f;
 	// The tolerance for the stop time
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category=SetUp)
 	float StopTolerance = UE_SMALL_NUMBER;
@@ -124,15 +124,15 @@ protected:
 	float GetTarget() const;
 	
 	/// internal values
-	float Target = 0.0;
-	float Value = 0.0;
-	float Output = 0.0;
-	float ErrorPrev = 0.0;
-	float ValuePrev = 0.0;
-	float Integral = 0.0;
-	float Proportional = 0.0;
-	float Derivative = 0.0;
-	float CoolDown = 0.0;
-	float DTAcum = 0.0;
+	float Target = 0.0f;
+	float Value = 0.0f;
+	float Output = 0.0f;
+	float ErrorPrev = 0.0f;
+	float ValuePrev = 0.0f;
+	float Integral = 0.0f;
+	float Proportional = 0.0f;
+	float Derivative = 0.0f;
+	float CoolDown = 0.0f;
+	float DTAcum = 0.0f;
 	bool HasDerivative = false;
 };
