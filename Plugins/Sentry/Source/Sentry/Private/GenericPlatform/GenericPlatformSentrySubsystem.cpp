@@ -666,10 +666,19 @@ void FGenericPlatformSentrySubsystem::InitWithSettings(const USentrySettings* se
 		// Clear replay videos captured during previous session if any
 		IFileManager::Get().DeleteDirectory(*FPaths::Combine(GetDatabasePath(), TEXT("replays")), false, true);
 
+		SessionReplayId = FGuid::NewGuid().ToString(EGuidFormats::Digits).ToLower();
+
 		SessionReplay = MakeUnique<FSentrySessionReplayRecorder>();
-		if (!SessionReplay->Initialize(settings, GetReplayPath()))
+		if (SessionReplay->Initialize(settings, SessionReplayId, GetReplayPath()))
+		{
+			SetContext(TEXT("replay"), { { TEXT("replay_id"), FSentryVariant(SessionReplayId) } });
+			SetAttribute(TEXT("sentry.replay_id"), FSentryVariant(SessionReplayId));
+			SetAttribute(TEXT("sentry._internal.replay_is_buffering"), FSentryVariant(true));
+		}
+		else
 		{
 			SessionReplay.Reset();
+			SessionReplayId.Reset();
 		}
 	}
 #endif
@@ -840,7 +849,7 @@ TSharedPtr<ISentryId> FGenericPlatformSentrySubsystem::CaptureMessageWithScope(c
 	onConfigureScope.ExecuteIfBound(NewLocalScope);
 	NewLocalScope->Apply(scope);
 
-	sentry_uuid_t id = sentry_capture_event_with_scope(nativeEvent, scope);
+	sentry_uuid_t id = sentry_scope_capture_event(scope, nativeEvent);
 
 	return MakeShareable(new FGenericPlatformSentryId(id));
 }
@@ -877,7 +886,7 @@ TSharedPtr<ISentryId> FGenericPlatformSentrySubsystem::CaptureEventWithScope(TSh
 	onScopeConfigure.ExecuteIfBound(NewLocalScope);
 	NewLocalScope->Apply(scope);
 
-	sentry_uuid_t id = sentry_capture_event_with_scope(nativeEvent, scope);
+	sentry_uuid_t id = sentry_scope_capture_event(scope, nativeEvent);
 
 	return MakeShareable(new FGenericPlatformSentryId(id));
 }
@@ -917,7 +926,7 @@ TSharedPtr<ISentryId> FGenericPlatformSentrySubsystem::CaptureEnsure(const FStri
 	sentry_attachment_set_filename(screenshotAttachment, "screenshot.png");
 	sentry_attachment_set_content_type(screenshotAttachment, "image/png");
 
-	sentry_uuid_t id = sentry_capture_event_with_scope(exceptionEvent, scope);
+	sentry_uuid_t id = sentry_scope_capture_event(scope, exceptionEvent);
 
 	IFileManager::Get().Delete(*ScreenshotPath);
 
@@ -1360,8 +1369,7 @@ FString FGenericPlatformSentrySubsystem::GetScreenshotPath() const
 #ifdef USE_SENTRY_SESSION_REPLAY
 FString FGenericPlatformSentrySubsystem::GetReplayPath() const
 {
-	const FString ReplayId = FGuid::NewGuid().ToString(EGuidFormats::DigitsWithHyphens).ToLower();
-	const FString ReplayPath = FPaths::Combine(GetDatabasePath(), TEXT("replays"), FString::Printf(TEXT("replay-%s.mp4"), *ReplayId));
+	const FString ReplayPath = FPaths::Combine(GetDatabasePath(), TEXT("replays"), FString::Printf(TEXT("replay-%s.mp4"), *SessionReplayId));
 	return FPaths::ConvertRelativePathToFull(ReplayPath);
 }
 #endif

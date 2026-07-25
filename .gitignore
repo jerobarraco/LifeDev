@@ -2,7 +2,7 @@
 tmp/
 Assets/ExtraAssets/
 
-# Visual Studio 2015 user specific files
+# Visual Studio user specific files
 .vs/
 .vscode/
 .idea/
@@ -67,8 +67,8 @@ Plugins/**/Binaries/*
 Build/*
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
-!Build/*/
-Build/*/**
+#!Build/*/
+#Build/*/**
 !Build/*/PakBlacklist*.txt
 
 # Don't ignore icon files in Build
@@ -86,6 +86,10 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Sentry
 !Plugins/Sentry/ThirdParty/**/*.exe
 !Plugins/Sentry/ThirdParty/**/*.dll
 !Plugins/Sentry/ThirdParty/**/*.lib
+!Plugins/Sentry/ThirdParty/**/*.app
+
