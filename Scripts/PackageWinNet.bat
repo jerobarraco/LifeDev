@@ -12,7 +12,7 @@ set CONFIG=Shipping
 ::set CLEAN=-clean
 set CLEAN=
 ::set DDC="-ddc=noshared" :: actually creates issues.
-set DDC=""
+set DDC=
 
 :: Copy app icon
 mkdir "%WORKSPACE%\Build\Windows\"
@@ -20,7 +20,7 @@ xcopy /y "%WORKSPACE%\Content\Omake\Application.ico" "%WORKSPACE%\Build\Windows\
 
 :: Build client
 pushd %UNREAL_ENGINE_ROOT% || exit /b 1
-call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%\%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%\Build\" %DDC%
+call ./Engine/Build/BatchFiles/RunUAT.bat BuildCookRun -project="%WORKSPACE%\%PROJECT_NAME%.uproject" -noP4 -platform=Win64 -clientconfig=%CONFIG% -serverconfig=%CONFIG% %clean% %DDC% -NoUBA -NoUbaLocal -cook -allmaps -build -stage -pak -stage -stagingdirectory="%WORKSPACE%\Build\"
 :: -AdditionalCookerOptions="-cookprocesscount=4"
 popd
 
