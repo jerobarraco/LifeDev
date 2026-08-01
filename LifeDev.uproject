@@ -106,21 +106,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "Behave",
-			"Enabled": false,
-			"SupportedTargetPlatforms": [
-				"Win64",
-				"Mac",
-				"IOS",
-				"Android",
-				"Linux"
-			]
-		},
-		{
-			"Name": "JScene",
-			"Enabled": false
-		},
-		{
 			"Name": "ChaosNiagara",
 			"Enabled": false
 		},
@@ -592,6 +577,10 @@
 		{
 			"Name": "FunctionalTestingEditor",
 			"Enabled": true
+		},
+		{
+		  "Name": "AIAssistant",
+		  "Enabled": false
 		}
 	],
 	"TargetPlatforms": [
