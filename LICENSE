@@ -1,15 +1,71 @@
- Copyright (C) 2023 Jeronimo Barraco-Marmol
+Copyright (C) 2023 Jeronimo Barraco-Marmol
 
-Code-like: AGPL-3.0-only
-Art-like (includes story, characters, and dialogues): CC-By-Sa 4
+# Who
+* Copyright (C) 2023 Jeronimo Barraco-Marmol, from now on "the author".
 
-These licenses only apply for uses that doesn't create problems for the original creators,
-or aren't deemed inappropriate usage.
-The creators reserve the right to withdraw the rights granted by these licenses in cases considered necessary.
+# What
+* "The content" or "original material" refers, but is not limited to, the content provided in this repository, other channels, or packaged builds.
+* Applies to content created or owned by the author.
+Some things might not be under these linceses, or be property of someone else.
+E.g.
+* The sentry plugin is property of Sentry.
+* Some plugins are distributed under the MIT license, _regardless_ of these extra conditions.
+
+# Conditions
+The content is provided under these licenses, but ONLY when the rest of the following restrictions listed here are also applied.
+License:
+* Code-like: AGPL-3.0-only
+* Art-like (includes story, characters, and dialogues): CC-By-Sa 4
+
+## Safeguard:
+* The author reserves the right to withdraw or terminate the licenses for reasons that the author deems appropriate.
+* The author reserves the right to change on update the terms without notice.
+* Any usage of the original material must preserve these restrictions.
+* * Hence provided with no more rights than provided by these terms. And potentially no less (in case of agpl and cc-by-sa).
+
+## Human:
+* The license is only provided to humans, for human usage. The license is not valid for usage with generative-ai/llms.
+* Training, "clean room reimplementation", code generation, code analysis, and other usages, are not allowed.
+
+## Representation:
+* Must not damage, defame, or missrepresent the original material or author.
+* Derivative content must cleary state that is not official nor canon.
+* * Must not imply, suggest, or confuse anyone into thinking it's official content.
+* When the derived content uses the project name, characters, settings, lore, etc; it has to:
+* * Use the original names, spelling, etc; correctly. (E.g. no misspelings)
+* * Not contradict the original material. (This is more a guideline that a rule, it can be bent after consulation with the author.)
+
+## Non-Endorsement, Non-Responsibility
+* The author takes no responsibility, nor provides any warranties for derivative content.
+* The usage of these license does not mean endorsement by the author. Derivative content must not imply or suggest endorsement.
+
+## Acceptable
+* Must not break the law.
+* * E.g. Must have the right for the rest of the content used.
+* Must be socially appropriate/acceptable. (e.g. Must not be hateful/damaging towards others).
+* Must not create legal or other types of problems for the author.
+
+## Economical
+* Must not compete with the original material.
+* * Derivative content must be substantially different.
+* * Redistribution of the packaged original material with minor modifications is strictly forbidden. Either free or for profit.
+* * * Agreements for rights to port the game can be done by contacting the author.
+* Not allowed the usage of game mechanics and other user interaction that might be considired gambling or exploitative such as:
+* * Gacha, loot boxes, micro-transactions.
+
+### Doujin
+* "Doujin" defined as: By "fanatics" content. By a small group of people, limited in economical scope, with limited economical margins, and not mass-produced.
+* Doujin has no special aditional restrictions (except the rest of the license).
+* Non-doujin that doesn't involve economical benefits (including donations), has no special aditional restrictions either.
+* Non-doujing work that involve economical benefits:
+* * Just basically don't compete with the original.
+* * Please let the author know about it.
+* So, this whole section is just to say that i love doujin, and I plan on being less restrictive for doujin creators whenever possible.
+
+## Mature content
+* While sexual or mature content, per-se, is not directly restricted, most of the characters are minors. Which would make it illegal.
+* Gore like content, might be considered socially inappropriate, or damaging, so it might not be acceptable.
 
 Please refrain from redistributing the project or packaged project with modifications that are not substantial or considerable. 
 
 If in doubt, contact us.
-
-Some things might not be under these linceses, or property of someone else.
-E.g. the sentry plugin.
