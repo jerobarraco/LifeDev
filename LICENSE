@@ -6,13 +6,16 @@ Copyright (C) 2023 Jeronimo Barraco-Marmol
 # What
 * "The content" or "original material" refers, but is not limited to, the content provided in this repository, other channels, or packaged builds.
 * Applies to content created or owned by the author.
+* The provided licenses are not an abdication of the author rights, but a preliminar agreement to not excersice them under specific conditions.
+
 Some things might not be under these linceses, or be property of someone else.
 E.g.
 * The sentry plugin is property of Sentry.
 * Some plugins are distributed under the MIT license, _regardless_ of these extra conditions.
 
 # Conditions
-The content is provided under these licenses, but ONLY when the rest of the following restrictions listed here are also applied.
+The content is provided under these licenses,
+ but ONLY when the rest of the following restrictions listed here are also applied.
 License:
 * Code-like: AGPL-3.0-only
 * Art-like (includes story, characters, and dialogues): CC-By-Sa 4
@@ -28,7 +31,7 @@ License:
 * Training, "clean room reimplementation", code generation, code analysis, and other usages, are not allowed.
 
 ## Representation:
-* Must not damage, defame, or missrepresent the original material or author.
+* Must not damage, defame, hurt the reputation, or missrepresent the original material or author.
 * Derivative content must cleary state that is not official nor canon.
 * * Must not imply, suggest, or confuse anyone into thinking it's official content.
 * When the derived content uses the project name, characters, settings, lore, etc; it has to:
@@ -42,15 +45,16 @@ License:
 ## Acceptable
 * Must not break the law.
 * * E.g. Must have the right for the rest of the content used.
-* Must be socially appropriate/acceptable. (e.g. Must not be hateful/damaging towards others).
+* Must be socially appropriate/acceptable. (e.g. Must not be hateful/damaging/harmful towards/for others).
 * Must not create legal or other types of problems for the author.
+* Must not be used to advertise or promote beliefs or idiologies beyond the bounds of fiction.
+* Must not publicly share ending scenes/content of the material.
 
 ## Economical
 * Must not compete with the original material.
 * * Derivative content must be substantially different.
-* * Redistribution of the packaged original material with minor modifications is strictly forbidden. Either free or for profit.
-* * * Agreements for rights to port the game can be done by contacting the author.
-* Not allowed the usage of game mechanics and other user interaction that might be considired gambling or exploitative such as:
+* * Redistribution of the packaged original material is strictly forbidden. Even with minor modifications. Either free or for profit.
+* Not allowed the usage of game mechanics, and other user interaction, that might be considired gambling or exploitative such as:
 * * Gacha, loot boxes, micro-transactions.
 
 ### Doujin
