@@ -352,6 +352,8 @@ https://www.youtube.com/watch?app=desktop&v=CYvLn-tYRag
 # gpu
 r.RHISetGPUCaptureOptions 1
 
+* r.DynamicRes, r.ScreenPercentage // r.SecondaryScreenPercentage.GameViewport // r.Upscale.Quality
+
 # ui
 disable (prevent) umg bindings https://www.youtube.com/watch?v=DxBKmQ-0kfw
 
