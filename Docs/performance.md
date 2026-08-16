@@ -357,6 +357,8 @@ r.RHISetGPUCaptureOptions 1
 # ui
 disable (prevent) umg bindings https://www.youtube.com/watch?v=DxBKmQ-0kfw
 
+# insights
+r.VsyncInformationInsights https://www.youtube.com/watch?v=dKSHw_8vz3I
 
 # cpp microopts
 cpp
