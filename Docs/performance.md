@@ -255,6 +255,9 @@ console command : obj list -countsort
 https://dev.epicgames.com/community/learning/knowledge-base/ePKR/unreal-engine-garbage-collector-internals
 https://bbkgl-github-io.translate.goog/2021/08/28/UE4-GC%E6%9C%BA%E5%88%B6%E8%A7%A3%E6%9E%904/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en
 
+object refs: `obj refs shortest name=/path/to/object`
+useful when things don't unload
+https://www.youtube.com/watch?v=CYvLn-tYRag
 
 # var
 * size map
@@ -329,6 +332,28 @@ https://cobracode.notion.site/How-to-reduce-Package-Size-for-Unreal-Engine-Game-
 
 	ensure the object count is sane
 	obj list -countsort
+        https://www.youtube.com/watch?app=desktop&v=CYvLn-tYRag @17:45 100k good, 500knot so god,  1M is bad
+    obj list class=x
+        -CSV
+    obj list -all
+    obj.TraceSnapshot 
+        console command , creates insights snapshot of all uobjects.
+
+# insights
+https://www.youtube.com/watch?app=desktop&v=CYvLn-tYRag
+@9:49
+-trace=default,task,counters,stats,LoadTime
+-StatNamedEvents -ExecCmds="stat unitgraph, stat fps" -NoVerifyGC -DPCvars="gc.VerifyAssumptionsOnFullPurge=0"
+-logCmds="LogGarbage verbose" -HandleEnsurePercent=0 -CoreLimit=14
+
+    obj.TraceSnapshot 
+        console command , creates insights snapshot of all uobjects.
+
+# gpu
+r.RHISetGPUCaptureOptions 1
+
+# ui
+disable (prevent) umg bindings https://www.youtube.com/watch?v=DxBKmQ-0kfw
 
 
 # cpp microopts
