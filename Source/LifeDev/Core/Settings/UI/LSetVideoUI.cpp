@@ -303,6 +303,12 @@ void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 	const float Limit = FrameRateOpts[Index];
 	Settings->SetFrameRateLimit(Limit);
 
+	// TODO, this won't be saved automatically i think. i need a way to re-set this on load.
+	static IConsoleVariable* CVarDynResFrameTimeBudget = IConsoleManager::Get().FindConsoleVariable(
+		TEXT("r.DynamicRes.FrameTimeBudget"));
+	if (LIKELY(CVarDynResFrameTimeBudget))
+		CVarDynResFrameTimeBudget->Set(int(1000/(Limit+2)));
+
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i SelIndex=%i, Index=%i Limit=%f"),
 		__func__, Num, SelIndex, Index, Limit);
 }
