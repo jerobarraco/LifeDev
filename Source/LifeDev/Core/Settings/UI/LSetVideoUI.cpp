@@ -302,16 +302,7 @@ void ULSetVideoUI::FrameRateChanged(const FString SelectedItem,
 	const int32 Index = FMath::Clamp(SelIndex, 0, Num-1);
 	const float Limit = FrameRateOpts[Index];
 	Settings->SetFrameRateLimit(Limit);
-
-	// TODO, this won't be saved automatically i think. i need a way to re-set this on load.
-	static IConsoleVariable* CVarDynResFrameTimeBudget = IConsoleManager::Get().FindConsoleVariable(
-		TEXT("r.DynamicRes.FrameTimeBudget"));
-	const int DynRes = int(1000/(Limit+2));
-	if (LIKELY(CVarDynResFrameTimeBudget))
-		CVarDynResFrameTimeBudget->Set(DynRes);
-	GConfig->SetFloat(TEXT("ConsoleVariables"), TEXT("r.DynamicRes.FrameTimeBudget"), DynRes, GEngineIni);
-
-
+	
 	UE_LOG(LogLSetVid, Log, TEXT("%hs Num=%i SelIndex=%i, Index=%i Limit=%f"),
 		__func__, Num, SelIndex, Index, Limit);
 }
@@ -340,6 +331,15 @@ void ULSetVideoUI::FrameRateApply() const {
 	GEngine->bForceDisableFrameRateSmoothing = (SelIndex == 0) | (!UseSmooth);
 	GEngine->SmoothedFrameRateRange.SetUpperBoundValue(Limit);
 	GEngine->FixedFrameRate = Limit;
+	// Set frametime budget. for Dynamic Res.
+	static IConsoleVariable* CVarDynResFrameTimeBudget = IConsoleManager::Get().FindConsoleVariable(
+		TEXT("r.DynamicRes.FrameTimeBudget"));
+	const int DynRes = int(1000/(Limit+2)); // +2 to have a bit of slack. int so that we only count full frames.
+	if (LIKELY(CVarDynResFrameTimeBudget)) CVarDynResFrameTimeBudget->Set(DynRes);
+	// save to config. so that it applies on start
+	GConfig->SetFloat(TEXT("ConsoleVariables"), TEXT("r.DynamicRes.FrameTimeBudget"),
+		DynRes, GEngineIni);
+
 
 	UE_LOG(LogLSetVid, Log, TEXT("%hs SelIndex=%i Limit=%f Smooth=%i"),
 		__func__, SelIndex, Limit, UseSmooth);
