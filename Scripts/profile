@@ -1,0 +1,4 @@
+#!/bin/bash
+pushd ../Build
+./Linux/LifeDev.sh -clearPSODriverCache -UserDir=./Data trace=default,task,counters,stats,LoadTime,Slate -StatNamedEvents -ExecCmds="stat unitgraph, stat fps" -NoVerifyGC -DPCvars="gc.VerifyAssumptionsOnFullPurge=0" -logCmds="LogGarbage verbose" -HandleEnsurePercent=0 -CoreLimit=14
+popd

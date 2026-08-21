@@ -349,6 +349,9 @@ https://www.youtube.com/watch?app=desktop&v=CYvLn-tYRag
     obj.TraceSnapshot 
         console command , creates insights snapshot of all uobjects.
 
+https://dev.epicgames.com/community/learning/tutorials/qEzo/unreal-engine-profiling-with-purpose-performance-lessons-from-a-real-unreal-project
+The "Task" channel in Unreal Insights shows task dependencies as arrows, which is very helpful for cross-thread investigations.
+
 # gpu
 r.RHISetGPUCaptureOptions 1
 
